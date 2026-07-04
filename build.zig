@@ -15,6 +15,11 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const yin_mod = b.addModule("yin", .{
+        .root_source_file = b.path("src/core/yin.zig"),
+        .target = target,
+    });
+
     const pulseaudio_dep = b.dependency("pulseaudio", .{
         .target = target,
         .optimize = optimize,
@@ -45,6 +50,7 @@ pub fn build(b: *std.Build) void {
             .imports = &.{
                 .{ .name = "pulse", .module = pulse_mod },
                 .{ .name = "ringBuffer", .module = ring_mod},
+                .{ .name = "yin", .module = yin_mod},
             },
         }),
     });
