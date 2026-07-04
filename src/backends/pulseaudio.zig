@@ -2,7 +2,8 @@
 
 const std = @import("std");
 const pa = @import("pulseaudio") ;
-const RingBuffer = @import("ringBuffer").ringBuffer(i16, 8192);
+const config = @import("config");
+const RingBuffer = @import("ringBuffer").ringBuffer(i16, config.buff_size);
 const assert = std.debug.assert;
 
 context: *pa.context,
