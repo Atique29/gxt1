@@ -106,7 +106,7 @@ pub fn ringBuffer(comptime T: type, comptime capacity: usize) type {
             return read_len;
         }
 
-        /// Clear the write, read indices and the buffer
+        /// Clear the write-read indices and the buffer
         pub fn flush(self: *Self) void {
             self.producer.write_idx.store(0, .release);
             self.consumer.read_idx.store(0, .release);
