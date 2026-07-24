@@ -113,6 +113,15 @@ pub fn ringBuffer(comptime T: type, comptime capacity: usize) type {
             @memset(&self.buff, 0);
         }
 
+        /// Returns the data size available for reading
+        /// Called by consumer
+        pub fn available(self: *Self) usize {
+            const read_idx = self.consumer.read_idx.load(.monotonic);
+            const write_idx = self.producer.write_idx.load(.monotonic);
+            const available_data = write_idx -% read_idx;
+            return available_data;
+        }
+
     };
 
 }

@@ -20,6 +20,11 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const config_mod = b.addModule("config", .{
+        .root_source_file = b.path("src/core/config.zig"),
+        .target = target,
+    });
+
     const pulseaudio_dep = b.dependency("pulseaudio", .{
         .target = target,
         .optimize = optimize,
@@ -35,7 +40,11 @@ pub fn build(b: *std.Build) void {
             .{
                 .name = "ringBuffer",
                 .module = ring_mod,
-            }
+            },
+            .{
+                .name = "config",
+                .module = config_mod,
+            },
         },
     });
     
@@ -51,6 +60,7 @@ pub fn build(b: *std.Build) void {
                 .{ .name = "pulse", .module = pulse_mod },
                 .{ .name = "ringBuffer", .module = ring_mod},
                 .{ .name = "yin", .module = yin_mod},
+                .{ .name = "config", .module = config_mod},
             },
         }),
     });

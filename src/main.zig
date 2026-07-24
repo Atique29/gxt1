@@ -7,11 +7,11 @@ const config = @import("config");
 const sampling_rate = config.sampling_rate;
 const max_lag = config.max_lag;
 const win_size = config.win_size;
-const buff_size = max_lag + win_size;
+const buff_size = config.buff_size;
 const thresh = config.threshold;
 const RingBuffer = @import("ringBuffer").ringBuffer(i16, buff_size);
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
 
     std.log.info("Initializing pulseaudio event-loop", .{});
     var p: Pulse = undefined;
@@ -28,16 +28,22 @@ pub fn main() !void {
 
     var yin_buff: [buff_size]i16 = undefined;
     // const stdout: Io.File = .stdout();
+    const io = init.io;
+    var counter: u8 = 0;
     while (true) {
         const available_data = rb.available();
-        if (available_data >= max_lag + win_size) {
+        if (available_data >= buff_size) {
             _ = rb.read(&yin_buff);
             // std.log.info("read {d} samples\n", .{read_len});
             // const byte_slice = std.mem.sliceAsBytes(fft_buf[0..read_len]);
             // try stdout.writeStreamingAll(io, byte_slice[0..0]);
-            const pitch = yin.detectPitch(win_size, max_lag, thresh, sampling_rate, yin_buff[0..]);
-            std.debug.print("Pitch: {d:.2}\n", .{pitch});
-
+            counter = counter +% 1;
+            if (counter % 3 == 0) {
+                const pitch = yin.detectPitch(win_size, max_lag, thresh, sampling_rate, yin_buff[0..]);
+                std.debug.print("Pitch: {d:.2}\n", .{pitch});
+            }
+        } else {
+            try Io.sleep(io, Io.Duration.fromMilliseconds(1), .real);
         } 
     }
 }
