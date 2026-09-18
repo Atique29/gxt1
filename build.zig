@@ -29,6 +29,15 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("src/core/tunings.zig"),
         .target = target,
     });
+
+    const utils_mod = b.addModule("utils", .{
+        .root_source_file = b.path("src/core/utils.zig"),
+        .imports = &.{
+            .{ .name = "tunings", .module=tunings_mod},
+        },
+        .target = target,
+    });
+
     const pulseaudio_dep = b.dependency("pulseaudio", .{
         .target = target,
         .optimize = optimize,
