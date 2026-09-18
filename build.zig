@@ -25,6 +25,10 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const tunings_mod = b.addModule("tunings", .{
+        .root_source_file = b.path("src/core/tunings.zig"),
+        .target = target,
+    });
     const pulseaudio_dep = b.dependency("pulseaudio", .{
         .target = target,
         .optimize = optimize,
@@ -57,10 +61,11 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .imports = &.{
-                .{ .name = "pulse", .module = pulse_mod },
+                .{ .name = "pulse",      .module = pulse_mod },
                 .{ .name = "ringBuffer", .module = ring_mod},
-                .{ .name = "yin", .module = yin_mod},
-                .{ .name = "config", .module = config_mod},
+                .{ .name = "yin",        .module = yin_mod},
+                .{ .name = "config",     .module = config_mod},
+                .{ .name = "tunings",    .module = tunings_mod},
             },
         }),
     });
