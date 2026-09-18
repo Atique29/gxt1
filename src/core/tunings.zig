@@ -21,20 +21,13 @@ pub const String = struct {
     freq: f32, 
 };
 
-pub const Tuning = struct {
-    first: String,
-    second: String, 
-    third: String,
-    fourth: String,
-    fifth: String,
-    sixth: String,
-};
+pub const Tuning = [6] String;
 
 pub const standard: Tuning = .{
-    .first =  .{ .num = 1, .note = .E, .freq = 329.63},
-    .second = .{ .num = 2, .note = .B, .freq = 246.94},
-    .third  = .{ .num = 3, .note = .G, .freq = 196.00},
-    .fourth = .{ .num = 4, .note = .D, .freq = 146.83},
-    .fifth =  .{ .num = 5, .note = .A, .freq = 110.00},
-    .sixth =  .{ .num = 6, .note = .E, .freq = 82.41},
+    .{ .num = 1, .note = .E, .freq = 329.63},
+    .{ .num = 2, .note = .B, .freq = 246.94},
+    .{ .num = 3, .note = .G, .freq = 196.00},
+    .{ .num = 4, .note = .D, .freq = 146.83},
+    .{ .num = 5, .note = .A, .freq = 110.00},
+    .{ .num = 6, .note = .E, .freq = 82.41},
 };
