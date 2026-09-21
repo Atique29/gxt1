@@ -2,6 +2,8 @@ const std = @import("std");
 const Io = std.Io;
 const Pulse = @import("pulse");
 const yin = @import("yin");
+const utils = @import("utils");
+const tunings = @import("tunings");
 const config = @import("config");
 
 const sampling_rate = config.sampling_rate;
@@ -27,20 +29,23 @@ pub fn main(init: std.process.Init) !void {
     p.unlock();
 
     var yin_buff: [buff_size]i16 = undefined;
-    // const stdout: Io.File = .stdout();
     const io = init.io;
     var counter: u8 = 0;
+
     while (true) {
+
         const available_data = rb.available();
         if (available_data >= buff_size) {
             _ = rb.read(&yin_buff);
-            // std.log.info("read {d} samples\n", .{read_len});
-            // const byte_slice = std.mem.sliceAsBytes(fft_buf[0..read_len]);
-            // try stdout.writeStreamingAll(io, byte_slice[0..0]);
             counter = counter +% 1;
+
             if (counter % 3 == 0) {
                 const pitch = yin.detectPitch(win_size, max_lag, thresh, sampling_rate, yin_buff[0..]);
-                std.debug.print("Pitch: {d:.2}\n", .{pitch});
+                const res = utils.findNearestPitch(tunings.standard, pitch);
+                const nearest_pitch: tunings.Pitch = res[0];
+                const deviation: f32 = res[1];
+
+                std.debug.print("Note: {s}{d} -- Dev:  {d:.2}\n", .{@tagName(nearest_pitch.pitch_class), nearest_pitch.octave, deviation});
             }
         } else {
             try Io.sleep(io, Io.Duration.fromMilliseconds(1), .real);

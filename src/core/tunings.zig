@@ -1,33 +1,41 @@
+/// Defines pitches and tunings in MIDI (C4)
 const std = @import("std");
 
-pub const Note = enum {
-    A,
-    B,
+/// Pitch Class definition
+pub const PitchClass = enum(u4){
     C,
+    C_Sharp,
     D, 
+    D_Sharp, 
     E, 
     F,
-    G, 
-    A_Sharp,
-    C_Sharp,
-    D_Sharp, 
     F_Sharp, 
+    G, 
     G_Sharp,
+    A,
+    A_Sharp,
+    B,
 };
 
-pub const String = struct {
-    num: u8,
-    note: Note,
-    freq: f32, 
+/// Pitch definition
+pub const Pitch = struct {
+    pitch_class: PitchClass,
+    octave: i8,
 };
 
-pub const Tuning = [6] String;
+/// MIDI Value definition (C4)
+pub const MidiVal = u8;
 
+/// Tuning Definition 
+pub const Tuning = [6] MidiVal;
+
+/// Standard Tuning
 pub const standard: Tuning = .{
-    .{ .num = 1, .note = .E, .freq = 329.63},
-    .{ .num = 2, .note = .B, .freq = 246.94},
-    .{ .num = 3, .note = .G, .freq = 196.00},
-    .{ .num = 4, .note = .D, .freq = 146.83},
-    .{ .num = 5, .note = .A, .freq = 110.00},
-    .{ .num = 6, .note = .E, .freq = 82.41},
+    64, // E4
+    59, // B3
+    55, // G3   
+    50, // D3
+    45, // A2
+    40, // E2
 };
+

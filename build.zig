@@ -75,6 +75,7 @@ pub fn build(b: *std.Build) void {
                 .{ .name = "yin",        .module = yin_mod},
                 .{ .name = "config",     .module = config_mod},
                 .{ .name = "tunings",    .module = tunings_mod},
+                .{ .name = "utils",      .module = utils_mod},
             },
         }),
     });
